@@ -33,16 +33,28 @@ After the initial technical boundaries are set, you MUST ask the user for the co
 - Once the idea is clear, you MUST generate a Product Requirements Document (PRD) and save it as a separate markdown file (e.g., `docs/PRD.md`).
 - The PRD MUST ONLY contain business features and user stories. It MUST NOT mention specific technologies or libraries.
 
-## 4. Serverless Tech Evaluation
+## 4. Architecture & Bounded Contexts Recognition
 
-Once the PRD is defined, you MUST evaluate what technologies to add based on our strict serverless philosophy:
+Once the PRD is defined, you MUST explicitly identify the main domain entities of the SaaS. These entities will dictate the **Bounded Contexts** (isolated modules) of the application.
+- You MUST also recognize core/cross-cutting contexts that are not tied to a specific business entity, such as `auth` (for authentication) or `shared` (for common utilities and cross-module infrastructure).
+
+You MUST evaluate what technologies to add based on our strict serverless philosophy:
 - **Deployment:** Default to Vercel or Google Cloud Run.
 - **Async & Background Jobs:** If the app needs to process information that is slow, takes time, or does not need an immediate synchronous response, you MUST use **Google Cloud Run Jobs** triggered via **Inngest**.
 - **Long-running/Scheduled Workflows:** If the app requires logic that spans across days or has specific scheduling per client, you MUST use **Inngest**.
 
+## 5. The Pre-Flight Proposal
+
+Before creating any files or writing code, you MUST present a comprehensive report (the "Pre-Flight Proposal") to the user. This proposal acts as a final confirmation step and MUST include:
+- **What** is going to be built (Summary of the PRD and chosen domain contexts).
+- **With what** technologies (Summarizing the decisions from the assessment wizard).
+- **How** it will be structured, specifically outlining the proposed folder structure (including the planned Bounded Contexts in `src/` and the routing structure in `src/app/`).
+
+You MUST ask the user if they agree with this proposal or if they want to make any changes before you begin generating the scaffolding.
+
 ---
 
-## 5. Infrastructure Setup
+## 6. Infrastructure Setup
 
 *(Apply these rules once the coding phase begins and Docker is required)*
 
