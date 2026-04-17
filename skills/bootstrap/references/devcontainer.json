@@ -1,0 +1,29 @@
+{
+  "dockerComposeFile": "../compose.dev.yml",
+  "service": "app",
+  "workspaceFolder": "/workspace",
+  "remoteUser": "node",
+  "updateRemoteUserUID": true,
+  "postCreateCommand": "npm install",
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
+      "version": "latest",
+      "enableNonRootDocker": true,
+      "moby": true
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "DavidAnson.vscode-markdownlint",
+        "bradlc.vscode-tailwindcss",
+        "redhat.vscode-yaml",
+        "pflannery.vscode-versionlens",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "streetsidesoftware.code-spell-checker"
+      ]
+    }
+  }
+}

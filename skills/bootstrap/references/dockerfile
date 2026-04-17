@@ -1,0 +1,28 @@
+FROM node:24.13-bookworm AS base
+WORKDIR /workspace
+EXPOSE 3000
+
+FROM base AS development
+# Intentionally minimal: compose.dev.yml uses bind mounts and runs `sleep infinity`,
+# so we don't need to copy sources or run npm install in this stage.
+
+FROM base AS build
+# Dummy args to satisfy build-time requirements
+ARG HUSKY=0
+ARG APP_NAME="<APP_NAME> (Build Stage)"
+ARG APP_BASE_URL="http://localhost:3000"
+USER node
+COPY --chown=node:node package*.json ./
+RUN npm ci
+COPY --chown=node:node . .
+RUN npm run build
+
+FROM base AS production
+ARG HUSKY=0
+USER node
+COPY --chown=node:node package*.json ./
+RUN npm ci --omit=dev
+COPY --chown=node:node --from=build /workspace/.next ./.next
+COPY --chown=node:node --from=build /workspace/public ./public
+COPY --chown=node:node --from=build /workspace/next.config.* ./
+CMD ["npm", "start"]
